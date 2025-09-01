@@ -1,0 +1,306 @@
+
+@use 'bootstrap/scss/bootstrap' as *;
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+// Variáveis personalizadas
+$primary-color: #067B95;
+$secondary-color: #6C757D;
+$success-color: #28A745;
+$danger-color: #dc3545;
+$light-gray: #f8f9fa;
+$border-color: #dee2e6;
+
+// Estilos globais
+body {
+  font-family: "Inter", sans-serif;
+  color: #333;
+  line-height: 1.6;
+}
+
+// Header personalizado
+.header-custom {
+  margin-bottom: 48px;
+  .logo-header {
+    width: 347px;
+    height: 65px;
+    margin-top: 48px;
+  }
+}
+
+// Footer personalizado
+.footer-custom {
+  background-color: white;
+  border-top: 1px solid $border-color;
+  margin-top: 60px;
+
+  .logo-footer {
+    width: 139px;
+    height: 32px;
+    object-fit: contain;
+    margin-right: 32px;
+  }
+}
+
+// Card principal
+.card {
+  border: 1px solid #CED4DA;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  background-color: #F8F9FA;
+  border-top: 5px solid #67C0C2;
+  max-width:1110px;
+  .card-body {
+    padding: 32px;
+  }
+}
+
+// Título principal
+h1 {
+  margin-bottom: 16px;
+}
+
+// Botão adicionar personalizado
+.btn-adicionar {
+  background-color: $primary-color;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size:16px;
+  line-height:18px;
+  height: 38px;
+  width: 159px;
+  margin-left: 8px;
+  padding: 10px 16px;
+}
+
+// Estilos da tabela
+.table {
+  border-radius: 8px;
+  overflow: hidden;
+
+  th {
+    color: #495057;
+    font-weight: 600;
+    border: none;
+    padding: 16px 12px;
+    font-size: 0.9rem;
+  }
+
+  td {
+    padding: 16px 12px;
+    border: none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    vertical-align: middle;
+  }
+
+  tr {
+    transition: background-color 0.2s ease;
+
+    &:last-child td {
+      border-bottom: none;
+    }
+  }
+}
+
+// Checkbox personalizado
+.form-check-input {
+  width: 1.2em;
+  height: 1.2em;
+  border: 2px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  &:checked {
+    background-color: $success-color;
+    border-color: $success-color;
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 0.2rem rgba($success-color, 0.25);
+  }
+}
+
+// Badge de tarefa concluída
+.badge {
+  font-size: 0.7rem;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+// Botão excluir
+.btn-outline-danger {
+  border: 0px;
+  background-color: #F8D7DA;
+  color: #842029;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  width:85px;
+  height:38px;
+
+  &:hover {
+    background-color: $danger-color;
+    border-color: $danger-color;
+    color: white;
+  }
+}
+
+// Modal personalizado
+.modal {
+  .modal-content {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  }
+
+  .modal-header {
+    border-bottom: none;
+    border-radius: 12px 12px 0 0;
+    background: linear-gradient(135deg, $primary-color 0%, darken($primary-color, 5%) 100%);
+
+    .modal-title {
+      font-weight: 600;
+    }
+  }
+
+  .modal-body {
+    padding: 2rem;
+  }
+
+  .modal-footer {
+    border-top: 1px solid #dee2e6;
+    padding: 1rem 2rem;
+
+    .btn {
+      border-radius: 6px;
+      padding: 8px 20px;
+      font-weight: 500;
+    }
+  }
+}
+
+.modal-backdrop {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.form-control {
+  border: 2px solid #e9ecef;
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+  height:38px;
+  width: 403px;
+  &:focus {
+    border-color: $primary-color;
+    box-shadow: 0 0 0 0.2rem rgba($primary-color, 0.25);
+  }
+}
+
+.form-label {
+  color: #495057;
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+
+
+.toast-container {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  right: 0;
+  padding: 1rem;
+  z-index: 1055;
+  pointer-events: none;
+  gap:-5px;
+}
+
+.toast {
+  width: 443px;
+  height: 43px;
+  min-height: 43px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  opacity: 0;
+  transform: translateX(20px); 
+  transition: opacity 0.35s ease, transform 0.35s ease;
+  display: flex;
+  padding: 0 0.75rem;
+  pointer-events: auto;
+
+  .toast-body {
+    flex-grow: 1;
+    font-size: 0.9rem;
+    color: #fff;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .btn-close {
+    margin-left: 0.5rem;
+  }
+
+  &.show {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  &.bg-success {
+    background-color: $success-color;
+  }
+
+  &.bg-danger {
+    background-color: $danger-color;
+  }
+
+  &.bg-warning {
+    background-color: rgba(255, 193, 7, 0.95);
+  }
+
+  &.bg-primary {
+    background-color: $primary-color;
+  }
+}
+
+
+input{
+    height:20px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.table tbody tr {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.toast.show {
+  animation: slideInRight 0.3s ease-out;
+}
+
+.table-header {
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
