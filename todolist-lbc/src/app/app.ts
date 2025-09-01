@@ -1,28 +1,25 @@
-import { Component, signal, computed, ChangeDetectionStrategy, effect, OnInit } from '@angular/core';
+import { Component, signal, computed, ChangeDetectionStrategy, effect, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PaginacaoComponent } from './components/paginacao/paginacao.component';
+import { ToastComponent } from './components/toast/toast.component';
 import { Tarefa } from './interfaces/tarefa.interface';
-import { Toast } from './interfaces/toast.interface';
-
-
-
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, FormsModule, PaginacaoComponent],
+  imports: [CommonModule, FormsModule, PaginacaoComponent, ToastComponent],
   templateUrl: './app.html',
   styleUrls: ['./app.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class App implements OnInit {
+  @ViewChild('toast') toastComponent?: ToastComponent;
+
   private _tarefas = signal<Tarefa[]>([]);
   private _novaTarefa = signal<string>('');
   private _paginaAtual = signal<number>(1);
   private _itensPorPagina = signal<number>(4);
-  public _toasts = signal<Toast[]>([]);
-  private _idCounter = 0;
 
   public opcoesItensPorPagina: number[] = [4, 8, 16, 32];
 
@@ -30,10 +27,8 @@ export class App implements OnInit {
   novaTarefa = this._novaTarefa.asReadonly();
   paginaAtual = this._paginaAtual.asReadonly();
   itensPorPagina = this._itensPorPagina.asReadonly();
-  toasts = this._toasts.asReadonly();
 
   constructor() {
-    // Persistência de tarefas no localStorage
     effect(() => {
       localStorage.setItem('tarefas', JSON.stringify(this._tarefas()));
     });
@@ -58,7 +53,7 @@ export class App implements OnInit {
     return this._tarefas().slice(inicio, fim);
   });
 
-  totalPaginas = computed(() => Math.ceil(this._tarefas().length / this._itensPorPagina()));
+  totalPaginas = computed(() => Math.max(1, Math.ceil(this._tarefas().length / this._itensPorPagina())));
   totalTarefas = computed(() => this._tarefas().length);
 
   onItensPorPaginaChange(novoValor: number): void {
@@ -70,57 +65,54 @@ export class App implements OnInit {
     this._novaTarefa.set(value);
   }
 
-adicionarTarefa(): void {
-  const texto = this._novaTarefa().trim();
-  if (!texto) return;
+  adicionarTarefa(): void {
+    const texto = this._novaTarefa().trim();
+    if (!texto) return;
 
-  try {
-    const tarefasAtuais = this._tarefas();
-    const novoId = tarefasAtuais.length ? Math.max(...tarefasAtuais.map(t => t.id)) + 1 : 1;
-    const nova: Tarefa = {
-      id: novoId,
-      nome: texto,
-      dataCriacao: new Date(),
-      concluida: false
-    };
-
-    this._tarefas.set([nova, ...tarefasAtuais]);
-    this._novaTarefa.set('');
-    this.mostrarToastMensagem('Tarefa adicionada', 'success');
-  } catch (error) {
-    console.error('Erro ao adicionar tarefa:', error);
-    this.mostrarToastMensagem('Não foi possível adicionar a tarefa', 'danger');
-  }
-}
-
-concluirTarefa(tarefa: Tarefa): void {
-  try {
-    const tarefasAtualizadas = this._tarefas().map(t =>
-      t.id === tarefa.id
-        ? { ...t, concluida: !t.concluida, dataConclusao: t.concluida ? undefined : new Date() }
-        : t
-    );
-    this._tarefas.set(tarefasAtualizadas);
-
-    if (!tarefa.concluida) {
-      this.mostrarToastMensagem('Tarefa concluída', 'success');
+    try {
+      const tarefasAtuais = this._tarefas();
+      const novoId = tarefasAtuais.length ? Math.max(...tarefasAtuais.map(t => t.id)) + 1 : 1;
+      const nova: Tarefa = {
+        id: novoId,
+        nome: texto,
+        dataCriacao: new Date(),
+        concluida: false
+      };
+      this._tarefas.set([nova, ...tarefasAtuais]);
+      this._novaTarefa.set('');
+      this.toastComponent?.show('Tarefa adicionada', 'success');
+    } catch {
+      this.toastComponent?.show('Não foi possível adicionar a tarefa', 'danger');
     }
-  } catch (error) {
-    console.error('Erro ao concluir tarefa:', error);
-    this.mostrarToastMensagem('Não foi possível concluir a tarefa', 'danger');
   }
-}
+
+  concluirTarefa(tarefa: Tarefa): void {
+    try {
+      const tarefasAtualizadas = this._tarefas().map(t =>
+        t.id === tarefa.id
+          ? {
+              ...t,
+              concluida: !t.concluida,
+              dataConclusao: t.concluida ? undefined : new Date() // corrigido para refletir a mudança real
+            }
+          : t
+      );
+      this._tarefas.set(tarefasAtualizadas);
+
+      if (!tarefa.concluida) {
+        this.toastComponent?.show('Tarefa concluída', 'success');
+      }
+    } catch {
+      this.toastComponent?.show('Não foi possível concluir a tarefa', 'danger');
+    }
+  }
 
   excluirTarefa(id: number): void {
     const atualizadas = this._tarefas().filter(t => t.id !== id);
     this._tarefas.set(atualizadas);
-
-    const totalPaginasAtual = Math.ceil(atualizadas.length / this._itensPorPagina());
-    if (this._paginaAtual() > totalPaginasAtual && totalPaginasAtual > 0) {
-      this._paginaAtual.set(totalPaginasAtual);
-    }
-
-    this.mostrarToastMensagem('Tarefa excluída', 'success');
+    const totalPaginasAtual = Math.max(1, Math.ceil(atualizadas.length / this._itensPorPagina()));
+    this._paginaAtual.set(Math.min(this._paginaAtual(), totalPaginasAtual));
+    this.toastComponent?.show('Tarefa excluída', 'success');
   }
 
   formatarData(data: Date): string {
@@ -133,15 +125,5 @@ concluirTarefa(tarefa: Tarefa): void {
 
   proximaPagina(): void {
     if (this._paginaAtual() < this.totalPaginas()) this._paginaAtual.update(p => p + 1);
-  }
-
-  mostrarToastMensagem(mensagem: string, tipo: Toast['tipo']): void {
-    const id = ++this._idCounter;
-    this._toasts.update(lista => [...lista, { id, mensagem, tipo, visivel: true }]);
-    setTimeout(() => this._toasts.update(lista => lista.filter(t => t.id !== id)), 5000);
-  }
-
-  fecharToast(id: number) {
-    this._toasts.update(lista => lista.filter(t => t.id !== id));
   }
 }

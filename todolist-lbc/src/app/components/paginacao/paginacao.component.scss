@@ -1,10 +1,12 @@
 .text-pagination{
-    color:#212529;
+    color:#495057;
     font-size: 16px;
     margin-right:16px;
+    line-height: 28px;
 }
 
 .pagination {
+    user-select: none;
     .page-item{
         margin-right:4px;
     }
