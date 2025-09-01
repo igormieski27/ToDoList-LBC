@@ -99,8 +99,8 @@ h1 {
   cursor: pointer;
 
   &:checked {
-    background-color: $success-color;
-    border-color: $success-color;
+    background-color: $primary-color;
+    border-color: $primary-color;
   }
 
   &:focus {
