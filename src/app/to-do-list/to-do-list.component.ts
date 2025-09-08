@@ -1,13 +1,22 @@
-import { Component, signal, computed, ChangeDetectionStrategy, effect, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
+import {
+  Component,
+  signal,
+  computed,
+  ChangeDetectionStrategy,
+  effect,
+  OnInit,
+  ViewChild,
+  ChangeDetectorRef,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { PaginacaoComponent } from '../shared/components/paginacao/paginacao.component'; // Caminho ajustado para shared
-import { ToastComponent } from '../shared/components/toast/toast.component'; // Caminho ajustado para shared
-import { Tarefa } from './interfaces/tarefa.interface'; // A interface fica aqui, específica para o recurso.
-import { HeaderComponent } from '../shared/components/header/header.component'; // Novo componente
-import { FooterComponent } from '../shared/components/footer/footer.component'; // Novo componente
-import { TarefasTabelaComponent } from './components/tarefas-tabela/tarefas-tabela.component'; // Novo componente
-import { AdicionarTarefaFormComponent } from './components/adicionar-tarefa-form/adicionar-tarefa-form.component'; // Novo componente
+import { PaginacaoComponent } from '../shared/components/paginacao/paginacao.component';
+import { ToastComponent } from '../shared/components/toast/toast.component';
+import { Tarefa } from './interfaces/tarefa.interface';
+import { HeaderComponent } from '../shared/components/header/header.component';
+import { FooterComponent } from '../shared/components/footer/footer.component';
+import { TarefasTabelaComponent } from './components/tarefas-tabela/tarefas-tabela.component';
+import { AdicionarTarefaFormComponent } from './components/adicionar-tarefa-form/adicionar-tarefa-form.component';
 @Component({
   selector: 'to-do-list',
   standalone: true,
@@ -19,11 +28,11 @@ import { AdicionarTarefaFormComponent } from './components/adicionar-tarefa-form
     HeaderComponent,
     FooterComponent,
     TarefasTabelaComponent,
-    AdicionarTarefaFormComponent
+    AdicionarTarefaFormComponent,
   ],
   templateUrl: './to-do-list.component.html',
   styleUrls: ['./to-do-list.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ToDoListComponent implements OnInit {
   @ViewChild('toast') toastComponent?: ToastComponent;
@@ -46,17 +55,34 @@ export class ToDoListComponent implements OnInit {
 
   ngOnInit(): void {
     const tarefasPadrao: Tarefa[] = [
-      { id: 1, nome: 'Falar com o Filipe Zuzarte', dataCriacao: new Date('2023-10-10T20:00:00'), concluida: false },
-      { id: 2, nome: 'Fazer deploy do projeto', dataCriacao: new Date('2023-10-10T19:00:00'), concluida: false },
-      { id: 3, nome: 'Fazer a folha de horas', dataCriacao: new Date('2023-10-10T18:00:00'), concluida: false }
+      {
+        id: 1,
+        nome: 'Falar com o Filipe Zuzarte',
+        dataCriacao: new Date('2023-10-10T20:00:00'),
+        concluida: false,
+      },
+      {
+        id: 2,
+        nome: 'Fazer deploy do projeto',
+        dataCriacao: new Date('2023-10-10T19:00:00'),
+        concluida: false,
+      },
+      {
+        id: 3,
+        nome: 'Fazer a folha de horas',
+        dataCriacao: new Date('2023-10-10T18:00:00'),
+        concluida: false,
+      },
     ];
     const tarefasSalvas = localStorage.getItem('tarefas');
     if (tarefasSalvas) {
-      this._tarefas.set(JSON.parse(tarefasSalvas).map((t: any) => ({
-        ...t,
-        dataCriacao: new Date(t.dataCriacao),
-        dataConclusao: t.conclusao ? new Date(t.conclusao) : undefined
-      })));
+      this._tarefas.set(
+        JSON.parse(tarefasSalvas).map((t: any) => ({
+          ...t,
+          dataCriacao: new Date(t.dataCriacao),
+          dataConclusao: t.conclusao ? new Date(t.conclusao) : undefined,
+        }))
+      );
     } else {
       this._tarefas.set(tarefasPadrao);
     }
@@ -72,7 +98,9 @@ export class ToDoListComponent implements OnInit {
     return this._tarefas().slice(inicio, fim);
   });
 
-  totalPaginas = computed(() => Math.max(1, Math.ceil(this._tarefas().length / this._itensPorPagina())));
+  totalPaginas = computed(() =>
+    Math.max(1, Math.ceil(this._tarefas().length / this._itensPorPagina()))
+  );
   totalTarefas = computed(() => this._tarefas().length);
 
   onItensPorPaginaChange(novoValor: number): void {
@@ -83,15 +111,15 @@ export class ToDoListComponent implements OnInit {
   adicionarTarefa(texto: string): void {
     try {
       const tarefasAtuais = this._tarefas();
-      const novoId = tarefasAtuais.length ? Math.max(...tarefasAtuais.map(t => t.id)) + 1 : 1;
+      const novoId = tarefasAtuais.length ? Math.max(...tarefasAtuais.map((t) => t.id)) + 1 : 1;
       const nova: Tarefa = {
         id: novoId,
         nome: texto,
         dataCriacao: new Date(),
-        concluida: false
+        concluida: false,
       };
       this._tarefas.set([nova, ...tarefasAtuais]);
-      this._paginaAtual.set(1); 
+      this._paginaAtual.set(1);
       this.toastComponent?.show('Tarefa adicionada', 'success');
     } catch {
       this.toastComponent?.show('Não foi possível adicionar a tarefa', 'danger');
@@ -100,13 +128,13 @@ export class ToDoListComponent implements OnInit {
 
   concluirTarefa(tarefa: Tarefa): void {
     try {
-      const tarefasAtualizadas = this._tarefas().map(t =>
+      const tarefasAtualizadas = this._tarefas().map((t) =>
         t.id === tarefa.id
           ? {
-            ...t,
-            concluida: !t.concluida,
-            dataConclusao: t.concluida ? undefined : new Date()
-          }
+              ...t,
+              concluida: !t.concluida,
+              dataConclusao: t.concluida ? undefined : new Date(),
+            }
           : t
       );
       this._tarefas.set(tarefasAtualizadas);
@@ -120,7 +148,7 @@ export class ToDoListComponent implements OnInit {
   }
 
   excluirTarefa(id: number): void {
-    const atualizadas = this._tarefas().filter(t => t.id !== id);
+    const atualizadas = this._tarefas().filter((t) => t.id !== id);
     this._tarefas.set(atualizadas);
     const totalPaginasAtual = Math.max(1, Math.ceil(atualizadas.length / this._itensPorPagina()));
     this._paginaAtual.set(Math.min(this._paginaAtual(), totalPaginasAtual));
@@ -128,10 +156,10 @@ export class ToDoListComponent implements OnInit {
   }
 
   paginaAnterior(): void {
-    if (this._paginaAtual() > 1) this._paginaAtual.update(p => p - 1);
+    if (this._paginaAtual() > 1) this._paginaAtual.update((p) => p - 1);
   }
 
   proximaPagina(): void {
-    if (this._paginaAtual() < this.totalPaginas()) this._paginaAtual.update(p => p + 1);
+    if (this._paginaAtual() < this.totalPaginas()) this._paginaAtual.update((p) => p + 1);
   }
 }
