@@ -1,12 +1,6 @@
 import { bootstrapApplication } from '@angular/platform-browser';
-import { App } from './app/app';
-import { importProvidersFrom } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { provideZonelessChangeDetection } from '@angular/core';
+import { AppComponent } from './app/app.component';
+import { appConfig } from './app/app.config'; // Importe o appConfig
 
-bootstrapApplication(App, {
-  providers: [
-    provideZonelessChangeDetection(),
-    importProvidersFrom(FormsModule)
-  ]
-}).catch(err => console.error(err));
+bootstrapApplication(AppComponent, appConfig)
+  .catch(err => console.error(err));

@@ -1,0 +1,22 @@
+@use '../../../../styles.scss' as *;
+
+.footer-custom {
+  background-color: palette("white");
+  border-top: 1px solid palette("gray", 300);
+  margin-top: 60px;
+  padding: 48px 0;
+  flex-shrink: 0;
+  
+  .logo-footer {
+    width: 139px;
+    height: 32px;
+    object-fit: contain;
+    margin-right: 32px;
+  }
+  
+  .footer-text {
+    font-size: 16px;
+    color: palette("gray", 700);
+    font-weight: 500;
+  }
+}

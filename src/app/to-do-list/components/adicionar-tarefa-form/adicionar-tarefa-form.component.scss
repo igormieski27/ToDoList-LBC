@@ -1,0 +1,32 @@
+@use '../../../../styles.scss' as *;
+@use 'sass:map';
+@use 'sass:meta';
+
+.btn-adicionar {
+  background-color: palette("primary");
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 18px;
+  height: 38px;
+  width: 159px;
+  margin-left: 8px;
+  padding: 10px 16px;
+}
+
+.form-control {
+  border: 2px solid palette("gray", 200);
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 0.95rem;
+  height: 38px;
+  width: 403px;
+  transition: all 0.2s ease;
+}
+
+.form-label {
+  color: palette("gray", 700);
+  font-weight: 500;
+  margin-bottom: 6px;
+}

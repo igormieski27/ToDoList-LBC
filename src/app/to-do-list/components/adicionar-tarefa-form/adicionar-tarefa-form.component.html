@@ -1,0 +1,17 @@
+<form (ngSubmit)="onSubmit()">
+  <div>
+    <label for="novaTarefa" class="form-label text-dark">Descrição da tarefa:</label>
+    <div class="d-flex">
+      <input
+        type="text"
+        class="form-control"
+        id="novaTarefa"
+        name="novaTarefaInput" [ngModel]="novaTarefa()"
+        (ngModelChange)="updateNovaTarefa($event)"
+        required />
+      <button class="btn btn-primary btn-adicionar flex-shrink-0">
+        Adicionar Tarefa
+      </button>
+    </div>
+  </div>
+</form>

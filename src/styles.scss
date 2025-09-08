@@ -1,7 +1,12 @@
+@use 'sass:map';
+@use 'sass:meta';
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
-body {
+* {
   font-family: "Inter", sans-serif;
+}
+
+body {
   color: #333;
   line-height: 1.6;
   display: flex;
@@ -11,4 +16,149 @@ body {
 
 main {
   flex: 1; 
+}
+
+$palette: (
+  
+  "primary": (
+    default: #0B7B95,
+    dark: #004555,
+    light: #EBE5FC
+  ),
+
+  "secondary": (
+    default: #6C757D,
+    dark: #54595E,
+    light: #ABB8BE
+  ),
+
+  "success": #28A745,
+  "danger": #DC3545,
+  "warning": #FFC107,
+  "info": #17A2B8,
+
+  "white": #FFFFFF,
+  "black": #000000,
+
+  "gray": (
+    100: #F8F9FA,
+    200: #E9ECEF,
+    300: #DEE2E6,
+    400: #CED4DA,
+    500: #ADB5BD,
+    600: #6C757D,
+    700: #495057,
+    800: #343A40,
+    900: #212529
+  ),
+
+  "yellow": (
+    100: #FFF3CD,
+    200: #FFE69C,
+    300: #FFDA6A,
+    400: #FFD039,
+    500: #FFC107,
+    600: #CCA906,
+    700: #997404,
+    800: #664D03,
+    900: #332701
+  ),
+
+  "green": (
+    100: #D1E7DD,
+    200: #A3CFBB,
+    300: #75B798,
+    400: #479F76,
+    500: #198754,
+    600: #146C43,
+    700: #0F5132,
+    800: #0A3622,
+    900: #051B11
+  ),
+
+  "teal": (
+    100: #D2F4EA,
+    200: #A6E9D5,
+    300: #79DFC1,
+    400: #4DD4AC,
+    500: #20C997,
+    600: #1AA179,
+    700: #13795B,
+    800: #0D503C,
+    900: #06281E
+  ),
+
+  "cyan": (
+    100: #CFF4FC,
+    200: #9EEAF9,
+    300: #6EDFF6,
+    400: #3DD5F3,
+    500: #0DCAF0,
+    600: #0AA2C0,
+    700: #087990,
+    800: #055160,
+    900: #032830
+  ),
+
+  "purple": (
+    100: #E2D9F3,
+    200: #C5B3E6,
+    300: #A98EDA,
+    400: #8C6CCD,
+    500: #6F42C1,
+    600: #59359A,
+    700: #432874,
+    800: #2C1A4D,
+    900: #160D27
+  ),
+
+  "pink": (
+    100: #F7D6E6,
+    200: #EFADCE,
+    300: #E685B5,
+    400: #DE5C9D,
+    500: #D63384,
+    600: #AB296A,
+    700: #801F4F,
+    800: #561435,
+    900: #2B0A1A
+  ),
+
+  "red": (
+    100: #F8D7DA,
+    200: #F1AEB5,
+    300: #EA868F,
+    400: #E35D6A,
+    500: #DC3545,
+    600: #B02A37,
+    700: #842029,
+    800: #58151C,
+    900: #2C0B0E
+  ),
+
+  "orange": (
+    100: #FFE5D0,
+    200: #FECBA1,
+    300: #FEB272,
+    400: #FDA943,
+    500: #FD7E14,
+    600: #CA6510,
+    700: #984C0C,
+    800: #653208,
+    900: #331904
+  )
+);
+
+
+@function palette($name, $weight: null) {
+  $value: map.get($palette, $name);
+
+  @if meta.type-of($value) == 'map' {
+    @if $weight == null {
+      @return map.get($value, default);
+    } @else {
+      @return map.get($value, $weight);
+    }
+  }
+  @return $value;
 }

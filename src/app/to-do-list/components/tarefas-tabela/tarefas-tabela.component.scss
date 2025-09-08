@@ -1,0 +1,92 @@
+@use '../../../../styles.scss' as *;
+@use 'sass:map';
+@use 'sass:meta';
+
+.table {
+    border-radius: 8px;
+    overflow: hidden;
+    color: palette("gray", 700) !important;
+    font-size: 16px;
+  
+    th {
+      color: palette("gray", 900);
+      font-weight: 800;
+      border: none;
+      padding: 16px 12px;
+      font-size: 16px;
+    }
+  
+    td {
+      border: none;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      vertical-align: middle;
+      color: palette("gray", 700) !important;
+    }
+  
+    tr {
+      transition: background-color 0.2s ease;
+      color: palette("gray", 700) !important;
+    }
+  
+    tbody tr {
+      animation: fadeIn 0.3s ease-out;
+    }
+  }
+  
+  .table-header {
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  }
+  
+  .table-responsive {
+    margin: 16px 0;
+  }
+  
+  .form-check-input {
+    width: 1.2em;
+    height: 1.2em;
+    border: 2px solid palette("gray", 300);
+    border-radius: 4px;
+    cursor: pointer;
+  
+    &:checked {
+      background-color: palette("primary");
+      border-color: palette("primary");
+    }
+  }
+  
+  .badge {
+    font-size: 0.7rem;
+    padding: 4px 8px;
+    border-radius: 6px;
+  }
+  
+  .btn-outline-danger {
+    border: 0;
+    background-color: palette("red", 100);
+    color: palette("red", 700);
+    font-size: 16px;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    width: 85px;
+    height: 38px;
+  
+    &:hover {
+      background-color: palette("danger");
+      border-color: palette("danger");
+      color: palette("white");
+    }
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
