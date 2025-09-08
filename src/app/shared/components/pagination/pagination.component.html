@@ -3,13 +3,13 @@
   <nav aria-label="Navegação de páginas">
     <ul class="pagination pagination-sm mb-0">
       <li class="page-item" [class.disabled]="isPreviousPageDisabled()">
-        <a class="page-link" (click)="previousPage.emit()" style="cursor: pointer;">Anterior</a>
+        <a class="page-link" (click)="previousPage.emit()" style="cursor: pointer">Anterior</a>
       </li>
       <li class="page-item active">
         <span class="page-link">{{ currentPage }}</span>
       </li>
       <li class="page-item" [class.disabled]="isNextPageDisabled()">
-        <a class="page-link" (click)="nextPage.emit()" style="cursor: pointer;">Seguinte</a>
+        <a class="page-link" (click)="nextPage.emit()" style="cursor: pointer">Seguinte</a>
       </li>
     </ul>
   </nav>
@@ -19,7 +19,7 @@
       class="form-select form-select-sm"
       [ngModel]="itemsPerPage"
       (change)="onItemsPerPageChange($event)"
-      >
+    >
       @for (option of itemsPerPageOptions; track option) {
         <option [value]="option">{{ option }}</option>
       }

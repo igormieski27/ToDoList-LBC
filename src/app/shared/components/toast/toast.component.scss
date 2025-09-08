@@ -12,7 +12,7 @@
   width: 443px;
   min-height: 43px;
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   display: flex;
   padding: 0 0.75rem;
   pointer-events: auto;
@@ -30,8 +30,16 @@
     margin-left: 0.5rem;
   }
 
-  &.bg-success { background-color: #28A745; }
-  &.bg-danger { background-color: #dc3545; }
-  &.bg-warning { background-color: rgba(255, 193, 7, 0.95); }
-  &.bg-primary { background-color: #067B95; }
+  &.bg-success {
+    background-color: #28a745;
+  }
+  &.bg-danger {
+    background-color: #dc3545;
+  }
+  &.bg-warning {
+    background-color: rgba(255, 193, 7, 0.95);
+  }
+  &.bg-primary {
+    background-color: #067b95;
+  }
 }

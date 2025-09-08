@@ -3,7 +3,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
 * {
-  font-family: "Inter", sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 
 body {
@@ -11,144 +11,142 @@ body {
   line-height: 1.6;
   display: flex;
   flex-direction: column;
-  min-height: 100vh; 
+  min-height: 100vh;
 }
 
 main {
-  flex: 1; 
+  flex: 1;
 }
 
 $palette: (
-  
-  "primary": (
-    default: #0B7B95,
+  'primary': (
+    default: #0b7b95,
     dark: #004555,
-    light: #EBE5FC
+    light: #ebe5fc,
   ),
 
-  "secondary": (
-    default: #6C757D,
-    dark: #54595E,
-    light: #ABB8BE
+  'secondary': (
+    default: #6c757d,
+    dark: #54595e,
+    light: #abb8be,
   ),
 
-  "success": #28A745,
-  "danger": #DC3545,
-  "warning": #FFC107,
-  "info": #17A2B8,
+  'success': #28a745,
+  'danger': #dc3545,
+  'warning': #ffc107,
+  'info': #17a2b8,
 
-  "white": #FFFFFF,
-  "black": #000000,
+  'white': #ffffff,
+  'black': #000000,
 
-  "gray": (
-    100: #F8F9FA,
-    200: #E9ECEF,
-    300: #DEE2E6,
-    400: #CED4DA,
-    500: #ADB5BD,
-    600: #6C757D,
+  'gray': (
+    100: #f8f9fa,
+    200: #e9ecef,
+    300: #dee2e6,
+    400: #ced4da,
+    500: #adb5bd,
+    600: #6c757d,
     700: #495057,
-    800: #343A40,
-    900: #212529
+    800: #343a40,
+    900: #212529,
   ),
 
-  "yellow": (
-    100: #FFF3CD,
-    200: #FFE69C,
-    300: #FFDA6A,
-    400: #FFD039,
-    500: #FFC107,
-    600: #CCA906,
+  'yellow': (
+    100: #fff3cd,
+    200: #ffe69c,
+    300: #ffda6a,
+    400: #ffd039,
+    500: #ffc107,
+    600: #cca906,
     700: #997404,
-    800: #664D03,
-    900: #332701
+    800: #664d03,
+    900: #332701,
   ),
 
-  "green": (
-    100: #D1E7DD,
-    200: #A3CFBB,
-    300: #75B798,
-    400: #479F76,
+  'green': (
+    100: #d1e7dd,
+    200: #a3cfbb,
+    300: #75b798,
+    400: #479f76,
     500: #198754,
-    600: #146C43,
-    700: #0F5132,
-    800: #0A3622,
-    900: #051B11
+    600: #146c43,
+    700: #0f5132,
+    800: #0a3622,
+    900: #051b11,
   ),
 
-  "teal": (
-    100: #D2F4EA,
-    200: #A6E9D5,
-    300: #79DFC1,
-    400: #4DD4AC,
-    500: #20C997,
-    600: #1AA179,
-    700: #13795B,
-    800: #0D503C,
-    900: #06281E
+  'teal': (
+    100: #d2f4ea,
+    200: #a6e9d5,
+    300: #79dfc1,
+    400: #4dd4ac,
+    500: #20c997,
+    600: #1aa179,
+    700: #13795b,
+    800: #0d503c,
+    900: #06281e,
   ),
 
-  "cyan": (
-    100: #CFF4FC,
-    200: #9EEAF9,
-    300: #6EDFF6,
-    400: #3DD5F3,
-    500: #0DCAF0,
-    600: #0AA2C0,
+  'cyan': (
+    100: #cff4fc,
+    200: #9eeaf9,
+    300: #6edff6,
+    400: #3dd5f3,
+    500: #0dcaf0,
+    600: #0aa2c0,
     700: #087990,
     800: #055160,
-    900: #032830
+    900: #032830,
   ),
 
-  "purple": (
-    100: #E2D9F3,
-    200: #C5B3E6,
-    300: #A98EDA,
-    400: #8C6CCD,
-    500: #6F42C1,
-    600: #59359A,
+  'purple': (
+    100: #e2d9f3,
+    200: #c5b3e6,
+    300: #a98eda,
+    400: #8c6ccd,
+    500: #6f42c1,
+    600: #59359a,
     700: #432874,
-    800: #2C1A4D,
-    900: #160D27
+    800: #2c1a4d,
+    900: #160d27,
   ),
 
-  "pink": (
-    100: #F7D6E6,
-    200: #EFADCE,
-    300: #E685B5,
-    400: #DE5C9D,
-    500: #D63384,
-    600: #AB296A,
-    700: #801F4F,
+  'pink': (
+    100: #f7d6e6,
+    200: #efadce,
+    300: #e685b5,
+    400: #de5c9d,
+    500: #d63384,
+    600: #ab296a,
+    700: #801f4f,
     800: #561435,
-    900: #2B0A1A
+    900: #2b0a1a,
   ),
 
-  "red": (
-    100: #F8D7DA,
-    200: #F1AEB5,
-    300: #EA868F,
-    400: #E35D6A,
-    500: #DC3545,
-    600: #B02A37,
+  'red': (
+    100: #f8d7da,
+    200: #f1aeb5,
+    300: #ea868f,
+    400: #e35d6a,
+    500: #dc3545,
+    600: #b02a37,
     700: #842029,
-    800: #58151C,
-    900: #2C0B0E
+    800: #58151c,
+    900: #2c0b0e,
   ),
 
-  "orange": (
-    100: #FFE5D0,
-    200: #FECBA1,
-    300: #FEB272,
-    400: #FDA943,
-    500: #FD7E14,
-    600: #CA6510,
-    700: #984C0C,
+  'orange': (
+    100: #ffe5d0,
+    200: #fecba1,
+    300: #feb272,
+    400: #fda943,
+    500: #fd7e14,
+    600: #ca6510,
+    700: #984c0c,
     800: #653208,
-    900: #331904
-  )
+    900: #331904,
+  ),
 );
-
 
 @function palette($name, $weight: null) {
   $value: map.get($palette, $name);

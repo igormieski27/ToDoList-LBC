@@ -6,16 +6,20 @@ import { Task } from '../../interfaces/task.interface';
   standalone: true,
   imports: [],
   templateUrl: './tasks-table.component.html',
-  styleUrls: ['./tasks-table.component.scss']
+  styleUrls: ['./tasks-table.component.scss'],
 })
 export class TasksTableComponent {
   @Input() tasks: Task[] = [];
-  
+
   @Output() complete = new EventEmitter<Task>();
   @Output() delete = new EventEmitter<number>();
-  
+
   formatDate(date: Date): string {
-    return date.toLocaleDateString('pt-BR') + ', ' + date.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+    return (
+      date.toLocaleDateString('pt-BR') +
+      ', ' +
+      date.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
+    );
   }
 
   completeTask(task: Task): void {

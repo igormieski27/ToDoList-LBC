@@ -4,11 +4,11 @@
 @use 'sass:meta';
 
 .card {
-  border: 1px solid palette("gray", 400);
+  border: 1px solid palette('gray', 400);
   border-radius: 8px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  background-color: palette("gray", 100);
-  border-top: 5px solid #67C0C2;
+  background-color: palette('gray', 100);
+  border-top: 5px solid #67c0c2;
   max-width: 1110px;
 
   .card-body {
@@ -22,6 +22,6 @@ h1 {
 
 .total-tarefas {
   font-size: 20px;
-  color: palette("gray", 700);
+  color: palette('gray', 700);
   font-weight: 500;
 }

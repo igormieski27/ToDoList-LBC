@@ -1,4 +1,12 @@
-import { Component, signal, computed, ChangeDetectionStrategy, OnInit, inject, ChangeDetectorRef } from '@angular/core';
+import {
+  Component,
+  signal,
+  computed,
+  ChangeDetectionStrategy,
+  OnInit,
+  inject,
+  ChangeDetectorRef,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { PaginationComponent } from '../shared/components/pagination/pagination.component';
 import { ToastComponent } from '../shared/components/toast/toast.component';
@@ -20,14 +28,13 @@ import { Task } from './interfaces/task.interface';
     HeaderComponent,
     FooterComponent,
     TasksTableComponent,
-    AddTaskFormComponent
+    AddTaskFormComponent,
   ],
   templateUrl: './to-do-list.component.html',
   styleUrls: ['./to-do-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ToDoListComponent implements OnInit {
-
   private taskService = inject(TaskService);
   private toastService = inject(ToastService);
   private cdr = inject(ChangeDetectorRef);
@@ -39,9 +46,9 @@ export class ToDoListComponent implements OnInit {
 
   currentPage = this._currentPage.asReadonly();
   itemsPerPage = this._itemsPerPage.asReadonly();
-  
+
   tasks = this.taskService.tasks;
-  
+
   constructor() {}
 
   ngOnInit(): void {
@@ -86,16 +93,19 @@ export class ToDoListComponent implements OnInit {
 
   deleteTask(id: number): void {
     this.taskService.deleteTask(id);
-    const totalPagesAfterDeletion = Math.max(1, Math.ceil(this.tasks().length / this._itemsPerPage()));
+    const totalPagesAfterDeletion = Math.max(
+      1,
+      Math.ceil(this.tasks().length / this._itemsPerPage()),
+    );
     this._currentPage.set(Math.min(this._currentPage(), totalPagesAfterDeletion));
     this.toastService.show('Tarefa excluída', 'success');
   }
 
   previousPage(): void {
-    if (this.currentPage() > 1) this._currentPage.update(p => p - 1);
+    if (this.currentPage() > 1) this._currentPage.update((p) => p - 1);
   }
 
   nextPage(): void {
-    if (this.currentPage() < this.totalPages()) this._currentPage.update(p => p + 1);
+    if (this.currentPage() < this.totalPages()) this._currentPage.update((p) => p + 1);
   }
 }

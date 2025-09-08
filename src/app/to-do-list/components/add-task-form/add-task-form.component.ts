@@ -7,7 +7,7 @@ import { FormsModule } from '@angular/forms';
   standalone: true,
   imports: [FormsModule],
   templateUrl: './add-task-form.component.html',
-  styleUrls: ['./add-task-form.component.scss']
+  styleUrls: ['./add-task-form.component.scss'],
 })
 export class AddTaskFormComponent {
   private _newTask = signal<string>('');
