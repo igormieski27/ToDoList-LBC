@@ -1,137 +1,101 @@
-import { Component, signal, computed, ChangeDetectionStrategy, effect, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, signal, computed, ChangeDetectionStrategy, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { PaginacaoComponent } from '../shared/components/paginacao/paginacao.component'; // Caminho ajustado para shared
-import { ToastComponent } from '../shared/components/toast/toast.component'; // Caminho ajustado para shared
-import { Tarefa } from './interfaces/tarefa.interface'; // A interface fica aqui, específica para o recurso.
-import { HeaderComponent } from '../shared/components/header/header.component'; // Novo componente
-import { FooterComponent } from '../shared/components/footer/footer.component'; // Novo componente
-import { TarefasTabelaComponent } from './components/tarefas-tabela/tarefas-tabela.component'; // Novo componente
-import { AdicionarTarefaFormComponent } from './components/adicionar-tarefa-form/adicionar-tarefa-form.component'; // Novo componente
+import { PaginationComponent } from '../shared/components/pagination/pagination.component';
+import { ToastComponent } from '../shared/components/toast/toast.component';
+import { HeaderComponent } from '../shared/components/header/header.component';
+import { FooterComponent } from '../shared/components/footer/footer.component';
+import { TasksTableComponent } from './components/tasks-table/tasks-table.component';
+import { AddTaskFormComponent } from './components/add-task-form/add-task-form.component';
+import { TaskService } from './services/task.service';
+import { ToastService } from '../shared/services/toast.service';
+import { Task } from './interfaces/task.interface';
+
 @Component({
   selector: 'to-do-list',
   standalone: true,
   imports: [
-    CommonModule,
     FormsModule,
-    PaginacaoComponent,
+    PaginationComponent,
     ToastComponent,
     HeaderComponent,
     FooterComponent,
-    TarefasTabelaComponent,
-    AdicionarTarefaFormComponent
+    TasksTableComponent,
+    AddTaskFormComponent
   ],
   templateUrl: './to-do-list.component.html',
   styleUrls: ['./to-do-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ToDoListComponent implements OnInit {
-  @ViewChild('toast') toastComponent?: ToastComponent;
 
-  private _tarefas = signal<Tarefa[]>([]);
-  private _paginaAtual = signal<number>(1);
-  private _itensPorPagina = signal<number>(4);
+  private taskService = inject(TaskService);
+  private toastService = inject(ToastService);
+  private cdr = inject(ChangeDetectorRef);
 
-  public opcoesItensPorPagina: number[] = [4, 8, 16, 32];
+  private _currentPage = signal<number>(1);
+  private _itemsPerPage = signal<number>(4);
 
-  tarefas = this._tarefas.asReadonly();
-  paginaAtual = this._paginaAtual.asReadonly();
-  itensPorPagina = this._itensPorPagina.asReadonly();
+  public itemsPerPageOptions: number[] = [4, 8, 16, 32];
 
-  constructor(private cdr: ChangeDetectorRef) {
-    effect(() => {
-      localStorage.setItem('tarefas', JSON.stringify(this._tarefas()));
-    });
-  }
+  currentPage = this._currentPage.asReadonly();
+  itemsPerPage = this._itemsPerPage.asReadonly();
+  
+  tasks = this.taskService.tasks;
+  
+  constructor() {}
 
   ngOnInit(): void {
-    const tarefasPadrao: Tarefa[] = [
-      { id: 1, nome: 'Falar com o Filipe Zuzarte', dataCriacao: new Date('2023-10-10T20:00:00'), concluida: false },
-      { id: 2, nome: 'Fazer deploy do projeto', dataCriacao: new Date('2023-10-10T19:00:00'), concluida: false },
-      { id: 3, nome: 'Fazer a folha de horas', dataCriacao: new Date('2023-10-10T18:00:00'), concluida: false }
-    ];
-    const tarefasSalvas = localStorage.getItem('tarefas');
-    if (tarefasSalvas) {
-      this._tarefas.set(JSON.parse(tarefasSalvas).map((t: any) => ({
-        ...t,
-        dataCriacao: new Date(t.dataCriacao),
-        dataConclusao: t.conclusao ? new Date(t.conclusao) : undefined
-      })));
-    } else {
-      this._tarefas.set(tarefasPadrao);
-    }
-
-    setTimeout(() => {
-      this.cdr.detectChanges();
-    });
+    this.taskService.loadTasks();
+    this.cdr.detectChanges();
   }
 
-  tarefasPaginadas = computed(() => {
-    const inicio = (this._paginaAtual() - 1) * this._itensPorPagina();
-    const fim = inicio + this._itensPorPagina();
-    return this._tarefas().slice(inicio, fim);
+  paginatedTasks = computed(() => {
+    const start = (this._currentPage() - 1) * this._itemsPerPage();
+    const end = start + this._itemsPerPage();
+    return this.tasks().slice(start, end);
   });
 
-  totalPaginas = computed(() => Math.max(1, Math.ceil(this._tarefas().length / this._itensPorPagina())));
-  totalTarefas = computed(() => this._tarefas().length);
+  totalPages = computed(() => Math.max(1, Math.ceil(this.tasks().length / this._itemsPerPage())));
+  totalTasks = computed(() => this.tasks().length);
 
-  onItensPorPaginaChange(novoValor: number): void {
-    this._itensPorPagina.set(novoValor);
-    this._paginaAtual.set(1);
+  onItemsPerPageChange(newValue: number): void {
+    this._itemsPerPage.set(newValue);
+    this._currentPage.set(1);
   }
 
-  adicionarTarefa(texto: string): void {
+  addTask(text: string): void {
     try {
-      const tarefasAtuais = this._tarefas();
-      const novoId = tarefasAtuais.length ? Math.max(...tarefasAtuais.map(t => t.id)) + 1 : 1;
-      const nova: Tarefa = {
-        id: novoId,
-        nome: texto,
-        dataCriacao: new Date(),
-        concluida: false
-      };
-      this._tarefas.set([nova, ...tarefasAtuais]);
-      this._paginaAtual.set(1); 
-      this.toastComponent?.show('Tarefa adicionada', 'success');
+      this.taskService.addTask(text);
+      this._currentPage.set(1);
+      this.toastService.show('Tarefa adicionada', 'success');
     } catch {
-      this.toastComponent?.show('Não foi possível adicionar a tarefa', 'danger');
+      this.toastService.show('Não foi possível adicionar a tarefa', 'danger');
     }
   }
 
-  concluirTarefa(tarefa: Tarefa): void {
+  completeTask(task: Task): void {
     try {
-      const tarefasAtualizadas = this._tarefas().map(t =>
-        t.id === tarefa.id
-          ? {
-            ...t,
-            concluida: !t.concluida,
-            dataConclusao: t.concluida ? undefined : new Date()
-          }
-          : t
-      );
-      this._tarefas.set(tarefasAtualizadas);
-
-      if (!tarefa.concluida) {
-        this.toastComponent?.show('Tarefa concluída', 'success');
+      this.taskService.completeTask(task);
+      if (!task.finished) {
+        this.toastService.show('Tarefa concluída', 'success');
       }
     } catch {
-      this.toastComponent?.show('Não foi possível concluir a tarefa', 'danger');
+      this.toastService.show('Não foi possível concluir a tarefa', 'danger');
     }
   }
 
-  excluirTarefa(id: number): void {
-    const atualizadas = this._tarefas().filter(t => t.id !== id);
-    this._tarefas.set(atualizadas);
-    const totalPaginasAtual = Math.max(1, Math.ceil(atualizadas.length / this._itensPorPagina()));
-    this._paginaAtual.set(Math.min(this._paginaAtual(), totalPaginasAtual));
-    this.toastComponent?.show('Tarefa excluída', 'success');
+  deleteTask(id: number): void {
+    this.taskService.deleteTask(id);
+    const totalPagesAfterDeletion = Math.max(1, Math.ceil(this.tasks().length / this._itemsPerPage()));
+    this._currentPage.set(Math.min(this._currentPage(), totalPagesAfterDeletion));
+    this.toastService.show('Tarefa excluída', 'success');
   }
 
-  paginaAnterior(): void {
-    if (this._paginaAtual() > 1) this._paginaAtual.update(p => p - 1);
+  previousPage(): void {
+    if (this.currentPage() > 1) this._currentPage.update(p => p - 1);
   }
 
-  proximaPagina(): void {
-    if (this._paginaAtual() < this.totalPaginas()) this._paginaAtual.update(p => p + 1);
+  nextPage(): void {
+    if (this.currentPage() < this.totalPages()) this._currentPage.update(p => p + 1);
   }
 }

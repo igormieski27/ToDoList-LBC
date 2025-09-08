@@ -10,29 +10,29 @@
                         <div class="card-body">
                             <h1 class="fw-bold text-dark">As minhas tarefas</h1>
                             <div class="d-flex justify-content-between align-items-center">
-                                <app-adicionar-tarefa-form
-                                    (adicionarTarefa)="adicionarTarefa($event)"></app-adicionar-tarefa-form>
+                                <app-add-task-form
+                                    (addTask)="addTask($event)"></app-add-task-form>
                                 <div class="align-self-end">
-                                    <app-paginacao [paginaAtual]="paginaAtual()" [totalPaginas]="totalPaginas()"
-                                        [itensPorPagina]="itensPorPagina()"
-                                        [opcoesItensPorPagina]="opcoesItensPorPagina"
-                                        (paginaAnterior)="paginaAnterior()" (proximaPagina)="proximaPagina()"
-                                        (itensPorPaginaChange)="onItensPorPaginaChange($event)">
-                                    </app-paginacao>
+                                    <app-pagination [currentPage]="currentPage()" [totalPages]="totalPages()"
+                                        [itemsPerPage]="itemsPerPage()"
+                                        [itemsPerPageOptions]="itemsPerPageOptions"
+                                        (previousPage)="previousPage()" (nextPage)="nextPage()"
+                                        (itemsPerPageChange)="onItemsPerPageChange($event)">
+                                    </app-pagination>
                                 </div>
                             </div>
 
-                            <app-tarefas-tabela [tarefas]="tarefasPaginadas()" (concluir)="concluirTarefa($event)"
-                                (excluir)="excluirTarefa($event)">
-                            </app-tarefas-tabela>
+                            <app-tasks-table [tasks]="paginatedTasks()" (complete)="completeTask($event)"
+                                (delete)="deleteTask($event)">
+                            </app-tasks-table>
 
                             <div class="table-footer-container d-flex justify-content-between align-items-center">
-                                <span class="total-tarefas">Total de tarefas: {{ totalTarefas() }}</span>
-                                <app-paginacao [paginaAtual]="paginaAtual()" [totalPaginas]="totalPaginas()"
-                                    [itensPorPagina]="itensPorPagina()" [opcoesItensPorPagina]="opcoesItensPorPagina"
-                                    (paginaAnterior)="paginaAnterior()" (proximaPagina)="proximaPagina()"
-                                    (itensPorPaginaChange)="onItensPorPaginaChange($event)">
-                                </app-paginacao>
+                                <span class="total-tasks">Total de tarefas: {{ totalTasks() }}</span>
+                                <app-pagination [currentPage]="currentPage()" [totalPages]="totalPages()"
+                                    [itemsPerPage]="itemsPerPage()" [itemsPerPageOptions]="itemsPerPageOptions"
+                                    (previousPage)="previousPage()" (nextPage)="nextPage()"
+                                    (itemsPerPageChange)="onItemsPerPageChange($event)">
+                                </app-pagination>
                             </div>
                         </div>
                     </div>

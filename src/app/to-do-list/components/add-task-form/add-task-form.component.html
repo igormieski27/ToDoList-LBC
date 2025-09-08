@@ -6,8 +6,8 @@
         type="text"
         class="form-control"
         id="novaTarefa"
-        name="novaTarefaInput" [ngModel]="novaTarefa()"
-        (ngModelChange)="updateNovaTarefa($event)"
+        name="novaTarefaInput" [ngModel]="newTask()"
+        (ngModelChange)="updateNewTask($event)"
         required />
       <button class="btn btn-primary btn-adicionar flex-shrink-0">
         Adicionar Tarefa

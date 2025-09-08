@@ -1,11 +1,6 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-interface Toast {
-  id: number;
-  mensagem: string;
-  tipo: 'success' | 'danger' | 'warning' | 'info';
-}
+import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'toast',
@@ -15,21 +10,10 @@ interface Toast {
   styleUrls: ['./toast.component.scss']
 })
 export class ToastComponent {
-  private _idCounter = 0;
-  public toasts = signal<Toast[]>([]);
+  private toastService = inject(ToastService);
+  public toasts = this.toastService.toasts;
 
-  show(mensagem: string, tipo: Toast['tipo'] = 'info', duracao = 5000) {
-    const id = ++this._idCounter;
-    const toast: Toast = { id, mensagem, tipo };
-    this.toasts.update(list => [...list, toast]);
-    setTimeout(() => this.remove(id), duracao);
-  }
-
-  remove(id: number) {
-    this.toasts.update(list => list.filter(t => t.id !== id));
-  }
-
-  fecharClick(id: number) {
-    this.remove(id);
+  closeClick(id: number) {
+    this.toastService.remove(id);
   }
 }
