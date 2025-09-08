@@ -45,6 +45,11 @@ export class ToDoListComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    const tarefasPadrao: Tarefa[] = [
+      { id: 1, nome: 'Falar com o Filipe Zuzarte', dataCriacao: new Date('2023-10-10T20:00:00'), concluida: false },
+      { id: 2, nome: 'Fazer deploy do projeto', dataCriacao: new Date('2023-10-10T19:00:00'), concluida: false },
+      { id: 3, nome: 'Fazer a folha de horas', dataCriacao: new Date('2023-10-10T18:00:00'), concluida: false }
+    ];
     const tarefasSalvas = localStorage.getItem('tarefas');
     if (tarefasSalvas) {
       this._tarefas.set(JSON.parse(tarefasSalvas).map((t: any) => ({
@@ -53,7 +58,7 @@ export class ToDoListComponent implements OnInit {
         dataConclusao: t.conclusao ? new Date(t.conclusao) : undefined
       })));
     } else {
-      this._tarefas.set([{ id: 1, nome: 'Tarefa nova', dataCriacao: new Date(), concluida: false }]);
+      this._tarefas.set(tarefasPadrao);
     }
 
     setTimeout(() => {
