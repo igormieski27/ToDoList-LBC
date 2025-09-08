@@ -6,10 +6,10 @@ import { Task } from '../../to-do-list/interfaces/task.interface';
 })
 export class TaskService {
   private _tasks = signal<Task[]>([]);
-
   tasks = this._tasks.asReadonly();
 
   constructor() {
+    this.loadTasks();
     effect(() => {
       localStorage.setItem('tarefas', JSON.stringify(this._tasks()));
     });
@@ -67,10 +67,10 @@ export class TaskService {
     const updatedTasks = this._tasks().map((t) =>
       t.id === task.id
         ? {
-            ...t,
-            finished: !t.finished,
-            conclusionDate: t.finished ? undefined : new Date(),
-          }
+          ...t,
+          finished: !t.finished,
+          conclusionDate: t.finished ? undefined : new Date(),
+        }
         : t,
     );
     this._tasks.set(updatedTasks);
