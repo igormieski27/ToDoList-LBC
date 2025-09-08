@@ -24,7 +24,7 @@ import { Task } from './interfaces/task.interface';
   ],
   templateUrl: './to-do-list.component.html',
   styleUrls: ['./to-do-list.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ToDoListComponent implements OnInit {
 
